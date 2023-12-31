@@ -4,6 +4,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
+      <h1>Ravenous</h1>
       <SearchBar />
       <BusinessList businessListPropsObject={createBusinessListPropsObject()} />
     </div>
@@ -11,6 +12,25 @@ function App() {
 }
 
 export default App;
+
+function SearchBar() {
+  return (
+    <div className="SearchBar">
+      <label for="searchTerms">Search for:&nbsp;</label>
+      <input name="searchTerms" />
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <label for="location">Location:&nbsp;</label>
+      <input name="location" />
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button className="btn btn-primary">Search</button>
+    </div>
+  );
+
+  // TODO: Sorting options for:
+  // Best Match
+  // Highest Rated
+  // Most Reviewed
+}
 
 function Business({business}) { // image, name, address, city, state, zipcode, category, rating, review_count) {
   return (
@@ -26,18 +46,22 @@ function BusinessList(props) {
   const businessesArray = props.businessListPropsObject.businessesArray;
 
   return (
-    <div>
-      <ul>
-        {businessesArray.map((b, index) => 
-          (
-            <li key={index}>
-              <Business business={b} />
-            </li>
-          ))
-        }
-      </ul>
+    <div class="BusinessListingsPanel">
+      <div class="container">
+        <div class="row">
+          {businessesArray.map((b, index) => 
+            (
+              <div class="span4">
+                <Business business={b} />
+              </div>
+            ))
+          }
+        </div>
+      </div>
     </div>
   );
+
+  // <li key={index}>
 }
 
 function createBusinessListPropsObject() {
@@ -60,26 +84,6 @@ function createBusinessListPropsObject() {
   }
 
   return {businessesArray: list};
-}
-
-function SearchBar() {
-  return (
-    <div>
-      <h1>Ravenous</h1>
-      <label for="searchTerms">Search for:&nbsp;</label>
-      <input name="searchTerms" />
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <label for="location">Location:&nbsp;</label>
-      <input name="location" />
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <button>Search</button>
-    </div>
-  );
-
-  // TODO: Sorting options for:
-  // Best Match
-  // Highest Rated
-  // Most Reviewed
 }
 
 const mySampleBusiness = {

@@ -1,4 +1,16 @@
 .App {
+  /* text-align: center; */
+}
+
+h1 {
+  text-align: center;
+}
+
+.SearchBar {
+  text-align: center;
+}
+
+.BusinessListingsPanel {
   text-align: center;
 }
 
