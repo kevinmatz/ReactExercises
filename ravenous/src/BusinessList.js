@@ -20,9 +20,9 @@ function BusinessList(props) {
     <div className="BusinessListingsPanel">
       <div className="container">
         {chunkedBusinesses.map((chunk, rowIndex) => (
-          <div key={business.id} className="row">
+          <div key={rowIndex} className="row">
             {chunk.map((business, index) => (
-              <div key={index} className="col-md-4">
+              <div key={business.id} className="col-md-4">
                 <Business business={business} />
               </div>
             ))}
