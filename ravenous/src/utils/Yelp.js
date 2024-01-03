@@ -12,16 +12,14 @@ import getYelpApiKey from '../secrets/YelpApiKey';
 // export default getYelpApiKey;
 
 
-
-const yelpApiBaseUrl = 'https://api.yelp.com/v3';
-
-// const options = {method: 'GET', headers: {accept: 'application/json'}};
-// fetch('https://api.yelp.com/v3/businesses/search?location=Victoria&term=tandoori&sort_by=best_match&limit=20', options)
-//   .then(response => response.json())
-//   .then(response => console.log(response))
-//   .catch(err => console.error(err));
+// CorsAnywhere:
+// Go to "https://cors-anywhere.herokuapp.com/corsdemo" and click "Request temporary access to the demo server"
+const corsAnywhereUrl = 'https://cors-anywhere.herokuapp.com/';
+// const yelpApiBaseUrl = corsAnywhereUrl + 'https://api.yelp.com/v3';
+const yelpApiBaseUrl = corsAnywhereUrl + 'api.yelp.com/v3';
 
 
+// Returns an array of Business records from Yelp's API
 const searchBusinessesOnYelp = async (searchTerms, location, sortOption) => {
   try {
     const endpoint = '/businesses/search';
@@ -33,7 +31,7 @@ const searchBusinessesOnYelp = async (searchTerms, location, sortOption) => {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        'Authorization': 'Basic ' + yelpApiBaseUrl
+        'Authorization': 'Bearer ' + getYelpApiKey()
       }
     };
 
@@ -41,14 +39,26 @@ const searchBusinessesOnYelp = async (searchTerms, location, sortOption) => {
 
     if (response.ok) {
       const jsonResponse = await response.json();
-      console.log('jsonResponse: ' + jsonResponse);
-      return jsonResponse;
+
+      // console.log('jsonResponse:');
+      // console.log(jsonResponse);
+
+      // Extract and return the array of businesses:
+      return jsonResponse["businesses"];
     } else {
-      console.log('Yelp API request failed');
+      console.log('Yelp API request failed:');
+      console.log(response);
     }
   } catch (error) {
     console.log(error);
   }
 }
+
+// const options = {method: 'GET', headers: {accept: 'application/json'}};
+// fetch('https://api.yelp.com/v3/businesses/search?location=Victoria&term=tandoori&sort_by=best_match&limit=20', options)
+//   .then(response => response.json())
+//   .then(response => console.log(response))
+//   .catch(err => console.error(err));
+
 
 export default searchBusinessesOnYelp;
