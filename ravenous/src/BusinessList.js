@@ -2,7 +2,7 @@ import React from 'react';
 import Business from './Business';
 
 function BusinessList(props) {
-  const businessesArray = props.businessListPropsObject.businessesArray;
+  const businessesArray = props.businessesArray;
 
   // Function to chunk the array
   const chunkArray = (array, size) => {
