@@ -1,12 +1,14 @@
 import './App.css';
 import SearchBar from './SearchBar';
 import BusinessList from './BusinessList';
+import searchBusinessesOnYelp from './utils/Yelp';
+
 
 function App() {
   return (
     <div className="App">
       <h1>Ravenous</h1>
-      <SearchBar />
+      <SearchBar searchHandler={searchBusinesses} />
       <br/>
       <BusinessList businessListPropsObject={createBusinessListPropsObject()} />
     </div>
@@ -15,6 +17,10 @@ function App() {
 
 export default App;
 
+const searchBusinesses = (searchTerms, location, sortOption) => {
+  const results = searchBusinessesOnYelp(searchTerms, location, sortOption);
+  console.log("results: " + results);
+}
 
 function createBusinessListPropsObject() {
   let list = [];
