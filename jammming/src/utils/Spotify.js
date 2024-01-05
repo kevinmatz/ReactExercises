@@ -51,33 +51,30 @@ const getAccessToken = async () => {
 
     console.log("authHeader: " + authHeader);
 
-    fetch(spotifyAccountsGetTokenUrl, {
+    let response = await fetch(spotifyAccountsGetTokenUrl, {
       method: 'POST',
       headers: {
         'Authorization': authHeader,
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       body: 'grant_type=client_credentials'
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.access_token) {
-        accessToken = data.access_token;
-        console.log("Successfully received access token: " + accessToken);
-        accessTokenLastUpdated = Date.now();
-        // accessTokenExpiresAt = accessTokenLastUpdated() + data['expires_in'];
-      } else {
-        console.log("Error 1");
-      }
-    })
-    .catch(error => console.error('Error:', error));
+    });
 
-    // console.log('Spotify access token request failed:');
-    // console.log(response);
-    // console.log('Response headers:');
-    // response.headers.forEach((value, key) => {
-    //   console.log(`${key}: ${value}`);
-    // });
+    let data = await response.json();
+    if (data.access_token) {
+      accessToken = data.access_token;
+      console.log("Successfully received access token: " + accessToken);
+      accessTokenLastUpdated = Date.now();
+      // accessTokenExpiresAt = accessTokenLastUpdated() + data['expires_in'];
+    } else {
+      console.log("Error: Spotify access token not received");
+      console.log("Response:");
+      console.log(JSON.stringify(data));
+      console.log('Response headers:');
+      response.headers.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
+    }
 
   } catch (error) {
     console.log(error);
