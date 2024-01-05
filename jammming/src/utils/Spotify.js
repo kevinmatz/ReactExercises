@@ -17,9 +17,10 @@ import { getClientId, getClientSecret } from '../secrets/SpotifyApiKey';
 // Go to "https://cors-anywhere.herokuapp.com/corsdemo" and click "Request temporary access to the demo server"
 const corsAnywhereUrl = 'https://cors-anywhere.herokuapp.com/';
 // const spotifyApiBaseUrl = 'https://api.spotify.com/v1';
-const spotifyApiBaseUrl = corsAnywhereUrl + 'api.spotify.com/v1';
-const spotifyAccountsGetTokenUrl = corsAnywhereUrl + "accounts.spotify.com/api/token";
+const spotifyApiBaseUrl = corsAnywhereUrl + 'https://api.spotify.com/v1';
 // const spotifyAccountsGetTokenUrl = "https://accounts.spotify.com/api/token";
+// const spotifyAccountsGetTokenUrl = corsAnywhereUrl + "accounts.spotify.com/api/token";
+const spotifyAccountsGetTokenUrl = corsAnywhereUrl + "https://accounts.spotify.com/api/token";
 
 let accessToken = '';
 let accessTokenLastUpdated = undefined;
@@ -44,41 +45,45 @@ const getAccessToken = async () => {
   // }
   
   try {
-    const options = {
+
+    var authHeader = 'Basic ' + btoa(getClientId() + ':' + getClientSecret());
+    // this only works with Node.js, not in a browser: (new Buffer.from(getClientId() + ':' + getClientSecret()).toString('base64'));
+
+    console.log("authHeader: " + authHeader);
+
+    fetch(spotifyAccountsGetTokenUrl, {
       method: 'POST',
       headers: {
+        'Authorization': authHeader,
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      data: `grant_type=client_credentials&client_id=${getClientId()}&client_secret=${getClientSecret()}`
-    };
+      body: 'grant_type=client_credentials'
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.access_token) {
+        accessToken = data.access_token;
+        console.log("Successfully received access token: " + accessToken);
+        accessTokenLastUpdated = Date.now();
+        // accessTokenExpiresAt = accessTokenLastUpdated() + data['expires_in'];
+      } else {
+        console.log("Error 1");
+      }
+    })
+    .catch(error => console.error('Error:', error));
 
-    const response = await fetch(spotifyAccountsGetTokenUrl, options);
+    // console.log('Spotify access token request failed:');
+    // console.log(response);
+    // console.log('Response headers:');
+    // response.headers.forEach((value, key) => {
+    //   console.log(`${key}: ${value}`);
+    // });
 
-    if (response.ok) {
-      const jsonResponse = await response.json();
-
-      console.log('jsonResponse:');
-      console.log(jsonResponse);
-
-      accessToken = jsonResponse['access_token'];
-      accessTokenLastUpdated = Date.now();
-      accessTokenExpiresAt = accessTokenLastUpdated() + jsonResponse['expires_in'];
-
-      // Extract and return the array of tracks:
-      return accessToken;
-    } else {
-      console.log('Spotify access token request failed:');
-      console.log(response);
-      console.log('Response headers:');
-      // console.log(response.headers.toString());
-      response.headers.forEach((value, key) => {
-        console.log(`${key}: ${value}`);
-      });
-    }
   } catch (error) {
     console.log(error);
   }
 
+  return accessToken;
 }
 
 
@@ -90,13 +95,19 @@ const searchTracks = async (searchTerms) => {
 
     const url = spotifyApiBaseUrl + endpoint + parameters;
 
+    let myAccessToken = await getAccessToken();
+    console.log("myAccessToken: " + myAccessToken);
+
     const options = {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        'Authorization': 'Bearer ' + getAccessToken()
+        'Authorization': 'Bearer ' + myAccessToken
       }
     };
+
+    console.log("Options: ");
+    console.log(options);
 
     const response = await fetch(url, options);
 
