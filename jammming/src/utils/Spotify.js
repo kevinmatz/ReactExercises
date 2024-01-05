@@ -18,13 +18,19 @@ import { getClientId, getClientSecret } from '../secrets/SpotifyApiKey';
 const corsAnywhereUrl = 'https://cors-anywhere.herokuapp.com/';
 // const spotifyApiBaseUrl = 'https://api.spotify.com/v1';
 const spotifyApiBaseUrl = corsAnywhereUrl + 'api.spotify.com/v1';
+const spotifyAccountsGetTokenUrl = corsAnywhereUrl + "accounts.spotify.com/api/token";
+// const spotifyAccountsGetTokenUrl = "https://accounts.spotify.com/api/token";
 
-// TODO: Write function
-// TODO: Token is good for one hour, implement caching?
+let accessToken = '';
+let accessTokenLastUpdated = undefined;
+let accessTokenExpiresAt = undefined;
+
+
+// TODO: Token is good for one hour, implement caching!
 const getAccessToken = async () => {
-  
-  // See: https://developer.spotify.com/documentation/web-api/tutorials/getting-started
 
+  // See: https://developer.spotify.com/documentation/web-api/tutorials/getting-started
+  //
   // curl -X POST "https://accounts.spotify.com/api/token" \
   //    -H "Content-Type: application/x-www-form-urlencoded" \
   //    -d "grant_type=client_credentials&client_id=your-client-id&client_secret=your-client-secret"
@@ -38,21 +44,15 @@ const getAccessToken = async () => {
   // }
   
   try {
-    // See: https://developer.spotify.com/documentation/web-api/reference/search
-    const endpoint = '/search';
-    const parameters = `?q=${searchTerms}&type=track&limit=50`;
-
-    const url = spotifyApiBaseUrl + endpoint + parameters;
-
     const options = {
-      method: 'GET',
+      method: 'POST',
       headers: {
-        accept: 'application/json',
-        'Authorization': 'Bearer ' + getAccessToken()
-      }
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: `grant_type=client_credentials&client_id=${getClientId()}&client_secret=${getClientSecret()}`
     };
 
-    const response = await fetch(url, options);
+    const response = await fetch(spotifyAccountsGetTokenUrl, options);
 
     if (response.ok) {
       const jsonResponse = await response.json();
@@ -60,11 +60,20 @@ const getAccessToken = async () => {
       console.log('jsonResponse:');
       console.log(jsonResponse);
 
+      accessToken = jsonResponse['access_token'];
+      accessTokenLastUpdated = Date.now();
+      accessTokenExpiresAt = accessTokenLastUpdated() + jsonResponse['expires_in'];
+
       // Extract and return the array of tracks:
-      return jsonResponse["tracks"]["items"];
+      return accessToken;
     } else {
-      console.log('Spotify API request failed:');
+      console.log('Spotify access token request failed:');
       console.log(response);
+      console.log('Response headers:');
+      // console.log(response.headers.toString());
+      response.headers.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
     }
   } catch (error) {
     console.log(error);

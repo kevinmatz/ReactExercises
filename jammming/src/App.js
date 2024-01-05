@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import SearchBar from './SearchBar';
 import TrackList from './TrackList';
-
+import searchTracks from './utils/Spotify';
 
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
     // console.log("results:");
     // console.log(results);
     // setBusinessesList(results);
-    const results = [];
+    const results = searchTracks(searchTerms);
     setTracksArray(results);
   }
 
