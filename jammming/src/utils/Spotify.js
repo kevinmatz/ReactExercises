@@ -115,7 +115,12 @@ const searchTracks = async (searchTerms) => {
       console.log(jsonResponse);
 
       // Extract and return the array of tracks:
-      return jsonResponse["tracks"]["items"];
+      const trackList = jsonResponse["tracks"]["items"];
+
+      console.log('trackList:');
+      console.log(trackList);
+
+      return trackList;
     } else {
       console.log('Spotify API request failed:');
       console.log(response);
