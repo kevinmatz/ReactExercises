@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import SearchBar from './SearchBar';
 import TrackList from './TrackList';
+import Playlist from './Playlist';
 import searchTracks from './utils/Spotify';
 
 const dummyTracksArrayForTesting = [
@@ -24,7 +25,12 @@ const dummyTracksArrayForTesting = [
 
 function App() {
   const [tracksArray, setTracksArray] = useState([]);
-  const [playlistArray, setPlaylistArray] = useState([]);
+  const [playlistName, setPlaylistName] = useState("");
+  const [playlistTracksArray, setPlaylistArray] = useState([]);
+
+  function playlistNameChangeHandler(event) {
+    setPlaylistName(() => event.target.value);
+  }
 
   const handleSearchSongs = async (searchTerms) => {
     const results = await searchTracks(searchTerms);
@@ -34,9 +40,22 @@ function App() {
   return (
     <div className="App">
       <h1>Jammming</h1>
-      <SearchBar searchHandler={handleSearchSongs} />
       <br/>
-      <TrackList tracksArray={tracksArray} />
+      <div className="container">
+        <div className="row">
+          <div className="col-md-4">
+            <SearchBar searchHandler={handleSearchSongs} />
+            <p>Tracks:</p>
+            <TrackList tracksArray={tracksArray} />
+          </div>
+          <div className="col-md-4">
+            <Playlist
+              playlistName={playlistName}
+              playlistNameChangeHandler={playlistNameChangeHandler}
+              playlistTracksArray={playlistTracksArray} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

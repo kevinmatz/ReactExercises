@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 
-function Track(props) {
+function PlaylistTrack(props) {
     
   return (
     <div className="Track">
@@ -11,9 +11,9 @@ function Track(props) {
           <span key={index}>{artist.name}{index === props.track.artists.length - 1 ? "" : ", "}</span>
       ))}</p>
 
-      <button>Add to Playlist =&gt;</button>
+      <button>&lt;= Remove from Playlist</button>
     </div>
   );
 }
 
-export default Track;
+export default PlaylistTrack;
