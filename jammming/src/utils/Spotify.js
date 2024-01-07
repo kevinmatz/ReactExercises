@@ -128,7 +128,7 @@ export const searchTracks = async (searchTerms) => {
   }
 }
 
-export const savePlaylistToSpotify = async (playlistTracksArray, token) => {
+export const savePlaylistToSpotify = async (token, playlistName, playlistTracksArray) => {
   // To access user account data, we can't use the token returned
   // from getAccessToken(); instead we must get the user to log in via
   // Spotify (this has now been added to App.js), and then that token
@@ -139,7 +139,9 @@ export const savePlaylistToSpotify = async (playlistTracksArray, token) => {
   // 3. "To add tracks to the new playlist, you will need to make a POST request to the //v1/users/{user_id}/playlists/{playlist_id}/tracks endpoint. You can provide a list of track IDs in the request body to add them to the playlist."
 
   const userId = await getUserId(token);
+  const result = await createPlaylist(token, userId, playlistName);
 
+  // TODO
 
 }
 
@@ -179,4 +181,48 @@ const getUserId = async (token) => {
   }
 
   return undefined;
+}
+
+const createPlaylist = async (token, userId, playlistName) => {
+  // Returns true if successful, false if not successful
+
+  // "To create a new playlist, you will need to make a POST request to the /v1/users/{user_id}/playlists endpoint. You can set the name and description of the new playlist in the request body."
+
+  const url = spotifyApiBaseUrl + `/users/${userId}/playlists`;
+
+  try {
+    let response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "name": playlistName,
+        "description": "My playlist",
+        "public": false 
+      })
+    });
+
+    // body: `{'name': playlistName, 'description': '(My playlist description)', 'public': false}`
+
+    let data = await response.json();
+    if (data.name === playlistName) {
+      console.log("Successfully created playlist: " + playlistName);
+      return true;
+    } else {
+      console.log("Error");
+      console.log("Response:");
+      console.log(JSON.stringify(data));
+      console.log('Response headers:');
+      response.headers.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+
+  return false;  // Not successful
 }

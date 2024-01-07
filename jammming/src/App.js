@@ -97,7 +97,7 @@ function App() {
 
     // TODO: Check for the playlist being empty?
 
-    const result = savePlaylistToSpotify(playlistTracksArray, token);
+    const result = savePlaylistToSpotify(token, playlistName, playlistTracksArray);
 
     // TODO: Check result and report success or failure to user
   }
@@ -108,7 +108,7 @@ function App() {
       <br/>
       <p>
         {!token ?
-          <a href={`${AUTH_ENDPOINT}?client_id=${getClientId()}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login to Spotify</a>
+          <a href={`${AUTH_ENDPOINT}?client_id=${getClientId()}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=playlist-modify-private`}>Login to Spotify</a>
         :
           <button onClick={logoutFromSpotify}>Logout from Spotify</button>
         }
