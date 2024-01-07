@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 
 
 function Track(props) {
-    
+  
+  function addTrackToPlaylistHandler(event) {
+    props.addTrackToPlaylistHandler(props.track);
+  }
+
   return (
     <div className="Track">
       <p>Id: {props.track.id}</p>
@@ -11,7 +15,7 @@ function Track(props) {
           <span key={index}>{artist.name}{index === props.track.artists.length - 1 ? "" : ", "}</span>
       ))}</p>
 
-      <button>Add to Playlist =&gt;</button>
+      <button onClick={() => addTrackToPlaylistHandler(props.track)}>Add to Playlist =&gt;</button>
     </div>
   );
 }

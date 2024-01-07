@@ -26,7 +26,7 @@ const dummyTracksArrayForTesting = [
 function App() {
   const [tracksArray, setTracksArray] = useState([]);
   const [playlistName, setPlaylistName] = useState("");
-  const [playlistTracksArray, setPlaylistArray] = useState([]);
+  const [playlistTracksArray, setPlaylistTracksArray] = useState([]);
 
   function playlistNameChangeHandler(event) {
     setPlaylistName(() => event.target.value);
@@ -35,6 +35,21 @@ function App() {
   const handleSearchSongs = async (searchTerms) => {
     const results = await searchTracks(searchTerms);
     setTracksArray(results);
+  }
+
+  const handleAddTrackToPlaylist = (track) => {
+    // console.log("handleAddTrackToPlaylist; track:");
+    // console.log(track);
+
+    // Check whether the track is already in the playlist
+    // (I think a playlist should be able to have the same track
+    // more that once, but for now let's avoid it, as we will have
+    // two identical keys if we are using track.id as the key)
+    if (playlistTracksArray.some(x => x.id === track.id)) {
+      console.log(`Selected track with track.id === ${track.id} is already in the playlist, so skipping it`);
+    } else {
+      setPlaylistTracksArray([...playlistTracksArray, track]);
+    }
   }
 
   return (
@@ -46,7 +61,10 @@ function App() {
           <div className="col-md-4">
             <SearchBar searchHandler={handleSearchSongs} />
             <p>Tracks:</p>
-            <TrackList tracksArray={tracksArray} />
+            <TrackList
+              tracksArray={tracksArray}
+              addTrackToPlaylistHandler={handleAddTrackToPlaylist}
+            />
           </div>
           <div className="col-md-4">
             <Playlist
