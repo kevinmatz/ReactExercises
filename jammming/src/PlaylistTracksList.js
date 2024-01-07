@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import PlaylistTrack from './PlaylistTrack';
 
-function PlaylistTracksList({ playlistTracksArray }) {
+function PlaylistTracksList({ playlistTracksArray, removeTrackFromPlaylistHandler }) {
   return (
     <div className="PlaylistTracksList">
       {
         playlistTracksArray.map((track, index) => (
-          <PlaylistTrack track={track} key={track.id} />
+          <PlaylistTrack
+            track={track}
+            key={track.id}
+            removeTrackFromPlaylistHandler={removeTrackFromPlaylistHandler}  
+          />
         ))
       }
     </div>

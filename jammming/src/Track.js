@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-
 function Track(props) {
   
   function addTrackToPlaylistHandler(event) {

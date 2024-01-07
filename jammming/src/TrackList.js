@@ -1,7 +1,6 @@
 import React from 'react';
 import Track from './Track';
 
-
 function TrackList({ tracksArray, addTrackToPlaylistHandler }) {
   return (
     <div className="TrackList">

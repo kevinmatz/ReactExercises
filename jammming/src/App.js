@@ -48,8 +48,13 @@ function App() {
     if (playlistTracksArray.some(x => x.id === track.id)) {
       console.log(`Selected track with track.id === ${track.id} is already in the playlist, so skipping it`);
     } else {
+      // Add track to the end of the array:s
       setPlaylistTracksArray([...playlistTracksArray, track]);
     }
+  }
+
+  const removeTrackFromPlaylistHandler = (track) => {
+    setPlaylistTracksArray(playlistTracksArray.filter(x => x.id !== track.id));
   }
 
   return (
@@ -70,7 +75,8 @@ function App() {
             <Playlist
               playlistName={playlistName}
               playlistNameChangeHandler={playlistNameChangeHandler}
-              playlistTracksArray={playlistTracksArray} />
+              playlistTracksArray={playlistTracksArray}
+              removeTrackFromPlaylistHandler={removeTrackFromPlaylistHandler} />
           </div>
         </div>
       </div>

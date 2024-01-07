@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
 import PlaylistTracksList from './PlaylistTracksList';
 
-
 function Playlist({
-  playlistName,
-  playlistNameChangeHandler,
-  playlistTracksArray
+    playlistName,
+    playlistNameChangeHandler,
+    playlistTracksArray,
+    removeTrackFromPlaylistHandler
   }) {
   
-    // const [playlistName, setPlaylistName] = useState("");
-
-  // function playlistNameChangeHandler(event) {
-  //   setPlaylistName(() => event.target.value);
-  // }
-
   return (
     <div className="Playlist">
-      <label for="PlaylistName">Playlist name:&nbsp;</label>
+      <label htmlFor="PlaylistName">Playlist name:&nbsp;</label>
       <input name="PlaylistName" value={playlistName} onChange={playlistNameChangeHandler} />
       <p>Tracks in this playlist:</p>
-      <PlaylistTracksList playlistTracksArray={playlistTracksArray} />
+      <PlaylistTracksList
+        playlistTracksArray={playlistTracksArray}
+        removeTrackFromPlaylistHandler={removeTrackFromPlaylistHandler}
+      />
     </div>
   );
 }
