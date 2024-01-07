@@ -5,7 +5,8 @@ function Playlist({
     playlistName,
     playlistNameChangeHandler,
     playlistTracksArray,
-    removeTrackFromPlaylistHandler
+    removeTrackFromPlaylistHandler,
+    savePlaylistToSpotifyHandler
   }) {
   
   return (
@@ -17,6 +18,11 @@ function Playlist({
         playlistTracksArray={playlistTracksArray}
         removeTrackFromPlaylistHandler={removeTrackFromPlaylistHandler}
       />
+      <button
+        className="btn btn-primary"
+        onClick={savePlaylistToSpotifyHandler}>
+          Save Playlist to Spotify
+      </button>
     </div>
   );
 }

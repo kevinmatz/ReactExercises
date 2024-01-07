@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import SearchBar from './SearchBar';
 import TrackList from './TrackList';
 import Playlist from './Playlist';
-import searchTracks from './utils/Spotify';
+import { searchTracks, savePlaylistToSpotify } from './utils/Spotify';
+import { getClientId } from './secrets/SpotifyApiKey';
+
 
 const dummyTracksArrayForTesting = [
   {
@@ -28,7 +30,34 @@ function App() {
   const [playlistName, setPlaylistName] = useState("");
   const [playlistTracksArray, setPlaylistTracksArray] = useState([]);
 
-  function playlistNameChangeHandler(event) {
+  // For Spotify authentication/authorization for access to user account data:
+  const REDIRECT_URI = "http://localhost:3000";
+  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+  const RESPONSE_TYPE = "token";
+
+  const [token, setToken] = useState("");
+
+  // Credit for this "login to Spotify code": https://www.youtube.com/watch?v=wBq3HCvYfUg ("Dom the dev")
+  useEffect(() => {
+    const hash = window.location.hash;
+    let token = window.localStorage.getItem("token")
+
+    if (!token && hash) {
+      token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1];
+      console.log(token);
+      window.location.hash = "";
+      window.localStorage.setItem("token", token);
+    }
+
+    setToken(token);
+  }, []);
+
+  const logoutFromSpotify = () => {
+    setToken("");
+    window.localStorage.removeItem("token");
+  }
+
+  function handlePlaylistNameChange(event) {
     setPlaylistName(() => event.target.value);
   }
 
@@ -53,13 +82,37 @@ function App() {
     }
   }
 
-  const removeTrackFromPlaylistHandler = (track) => {
+  const handleRemoveTrackFromPlaylist = (track) => {
     setPlaylistTracksArray(playlistTracksArray.filter(x => x.id !== track.id));
+  }
+
+  const handleSavePlaylistToSpotify = () => {
+    console.log("handleSavePlaylistToSpotify");
+
+    // Check: Has a name been entered?
+    if (playlistName.trim() === '') {
+      alert("Please enter a playlist name.");
+      return;
+    }
+
+    // TODO: Check for the playlist being empty?
+
+    const result = savePlaylistToSpotify(playlistTracksArray, token);
+
+    // TODO: Check result and report success or failure to user
   }
 
   return (
     <div className="App">
       <h1>Jammming</h1>
+      <br/>
+      <p>
+        {!token ?
+          <a href={`${AUTH_ENDPOINT}?client_id=${getClientId()}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login to Spotify</a>
+        :
+          <button onClick={logoutFromSpotify}>Logout from Spotify</button>
+        }
+      </p>
       <br/>
       <div className="container">
         <div className="row">
@@ -74,9 +127,10 @@ function App() {
           <div className="col-md-4">
             <Playlist
               playlistName={playlistName}
-              playlistNameChangeHandler={playlistNameChangeHandler}
+              playlistNameChangeHandler={handlePlaylistNameChange}
               playlistTracksArray={playlistTracksArray}
-              removeTrackFromPlaylistHandler={removeTrackFromPlaylistHandler} />
+              removeTrackFromPlaylistHandler={handleRemoveTrackFromPlaylist}
+              savePlaylistToSpotifyHandler={handleSavePlaylistToSpotify} />
           </div>
         </div>
       </div>
