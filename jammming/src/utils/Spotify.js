@@ -79,8 +79,7 @@ const getAccessToken = async () => {
   }
 
   return accessToken;
-}
-
+};
 
 export const searchTracks = async (searchTerms) => {
   try {
@@ -126,7 +125,7 @@ export const searchTracks = async (searchTerms) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const savePlaylistToSpotify = async (token, playlistName, playlistTracksArray) => {
   // To access user account data, we can't use the token returned
@@ -138,12 +137,27 @@ export const savePlaylistToSpotify = async (token, playlistName, playlistTracksA
   // 2. "To create a new playlist, you will need to make a POST request to the /v1/users/{user_id}/playlists endpoint. You can set the name and description of the new playlist in the request body."
   // 3. "To add tracks to the new playlist, you will need to make a POST request to the //v1/users/{user_id}/playlists/{playlist_id}/tracks endpoint. You can provide a list of track IDs in the request body to add them to the playlist."
 
-  const userId = await getUserId(token);
-  const result = await createPlaylist(token, userId, playlistName);
+  try {
+    const userId = await getUserId(token);
+    if (userId === undefined) {
+      throw new Error("Error: Could not retrieve user ID from Spotify");
+    }
 
-  // TODO
+    const playlistId = await createPlaylist(token, userId, playlistName);
+    if (playlistId === undefined) {
+      throw new Error("Error: Could not create playlist on Spotify");
+    }
 
-}
+    const result = await addTracksToPlaylist(token, userId, playlistId, playlistTracksArray);
+    if (!result) {
+      throw new Error("Error: Playlist created on Spotify, but an error occurred when adding the tracks to the playlist");
+    }
+
+    alert("Playlist successfully created in your Spotify account. (A duplicate playlist may have been created if you previously saved a playlist with the same name.)");
+  } catch (e) {
+    alert(e.message);
+  }
+};
 
 const getUserId = async (token) => {
   try {
@@ -181,10 +195,10 @@ const getUserId = async (token) => {
   }
 
   return undefined;
-}
+};
 
 const createPlaylist = async (token, userId, playlistName) => {
-  // Returns true if successful, false if not successful
+  // Returns playlistId of new playlist, or undefined if unsuccessful
 
   // "To create a new playlist, you will need to make a POST request to the /v1/users/{user_id}/playlists endpoint. You can set the name and description of the new playlist in the request body."
 
@@ -209,6 +223,48 @@ const createPlaylist = async (token, userId, playlistName) => {
     let data = await response.json();
     if (data.name === playlistName) {
       console.log("Successfully created playlist: " + playlistName);
+      console.log("Playlist id: " + data['id']);
+      return data['id'];
+    } else {
+      console.log("Error");
+      console.log("Response:");
+      console.log(JSON.stringify(data));
+      console.log('Response headers:');
+      response.headers.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+
+  return false;  // Not successful
+};
+
+const addTracksToPlaylist = async (token, userId, playlistId, playlistTracksArray) => {
+
+  // "To add tracks to the new playlist, you will need to make a POST request to the //v1/users/{user_id}/playlists/{playlist_id}/tracks endpoint. You can provide a list of track IDs in the request body to add them to the playlist."
+
+  const url = spotifyApiBaseUrl + `/users/${userId}/playlists/${playlistId}/tracks`;
+
+  try {
+    let response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "uris": playlistTracksArray.map(track => track.uri),
+        "position": 0
+      })
+    });
+
+    let data = await response.json();
+    if (data['snapshot_id']) {
+      console.log("Successfully updated playlist");
+      console.log("Snapshot ID: " + data['snapshot_id']);
       return true;
     } else {
       console.log("Error");
@@ -225,4 +281,4 @@ const createPlaylist = async (token, userId, playlistName) => {
   }
 
   return false;  // Not successful
-}
+};
