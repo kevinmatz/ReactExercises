@@ -10,21 +10,25 @@ function Playlist({
   }) {
   
   return (
-    <div className="Playlist">
-      <label htmlFor="PlaylistName">Playlist name:&nbsp;</label>
-      <input name="PlaylistName" value={playlistName} onChange={playlistNameChangeHandler} />
-      <p>Tracks in this playlist:</p>
+    <div className="playlist">
+      <div className="topSection">
+        <span className="sectionTitle">Playlist</span>
+        <label htmlFor="PlaylistName">Playlist name:&nbsp;</label>
+        <input name="PlaylistName" value={playlistName} onChange={playlistNameChangeHandler} />
+      </div>
       <PlaylistTracksList
         playlistTracksArray={playlistTracksArray}
         removeTrackFromPlaylistHandler={removeTrackFromPlaylistHandler}
       />
       <button
-        className="btn btn-primary"
+        className="savePlaylistButton btn btn-primary"
         onClick={savePlaylistToSpotifyHandler}>
           Save Playlist to Spotify
       </button>
     </div>
   );
 }
+
+// style={{'width': '100%'}}
 
 export default Playlist;

@@ -103,28 +103,39 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <h1>Jammming</h1>
-      <br/>
-      <p>
-        {!token ?
-          <a href={`${AUTH_ENDPOINT}?client_id=${getClientId()}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=playlist-modify-private`}>Login to Spotify</a>
-        :
-          <button onClick={logoutFromSpotify}>Logout from Spotify</button>
-        }
-      </p>
-      <br/>
+    <div className="app">
+      <div className="app-header">
+        <br/>
+        <h1>Ja<font style={{'color': 'red'}}>m</font><font style={{'color': 'lawngreen'}}>m</font><font style={{'color': 'royalblue'}}>m</font>ing</h1>
+        <br/>
+        <p>
+          {!token ?
+            <a
+              className="btn btn-primary"
+              href={`${AUTH_ENDPOINT}?client_id=${getClientId()}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=playlist-modify-private`}>
+                Login to Spotify
+            </a>
+          :
+            <button
+              className="btn btn-primary"
+              onClick={logoutFromSpotify}>
+                Logout from Spotify
+            </button>
+          }
+        </p>
+        <br/>
+      </div>
       <div className="container">
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-1"></div>
+          <div className="col-md-5">
             <SearchBar searchHandler={handleSearchSongs} />
-            <p>Tracks:</p>
             <TrackList
               tracksArray={tracksArray}
               addTrackToPlaylistHandler={handleAddTrackToPlaylist}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-5">
             <Playlist
               playlistName={playlistName}
               playlistNameChangeHandler={handlePlaylistNameChange}
@@ -132,6 +143,7 @@ function App() {
               removeTrackFromPlaylistHandler={handleRemoveTrackFromPlaylist}
               savePlaylistToSpotifyHandler={handleSavePlaylistToSpotify} />
           </div>
+          <div className="col-md-1"></div>
         </div>
       </div>
     </div>

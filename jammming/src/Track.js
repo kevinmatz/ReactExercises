@@ -7,16 +7,24 @@ function Track(props) {
   }
 
   return (
-    <div className="Track">
-      <p>Id: {props.track.id}</p>
-      <p>Name: {props.track.name}</p>
-      <p>Artists: {props.track.artists.map((artist, index) => (
+    <div className="track">
+      <span className="trackTitle">{props.track.name}</span>
+      <br/>
+      <span className="trackArtists">{props.track.artists.map((artist, index) => (
           <span key={index}>{artist.name}{index === props.track.artists.length - 1 ? "" : ", "}</span>
-      ))}</p>
+      ))}</span>
+      <br/>
 
-      <button onClick={() => addTrackToPlaylistHandler(props.track)}>Add to Playlist =&gt;</button>
+      <button
+        className="btn btn-primary"
+        onClick={() => addTrackToPlaylistHandler(props.track)}>
+          +
+      </button>
     </div>
   );
+
+  // <p>Id: {props.track.id}</p>
+
 }
 
 export default Track;

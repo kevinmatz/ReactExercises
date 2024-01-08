@@ -3,7 +3,7 @@ import Track from './Track';
 
 function TrackList({ tracksArray, addTrackToPlaylistHandler }) {
   return (
-    <div className="TrackList">
+    <div className="trackList">
       {
         tracksArray.map((track, index) => (
           <Track

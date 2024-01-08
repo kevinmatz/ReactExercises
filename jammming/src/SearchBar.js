@@ -14,11 +14,14 @@ function SearchBar(props) {   // Expected props: "searchHandler" (function that 
   }
 
   return (
-    <div className="SearchBar">
-      <label htmlFor="searchTerms">Search for:&nbsp;</label>
-      <input name="searchTerms" onChange={searchTermsChangeHandler} />
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <button className="btn btn-primary" onClick={searchButtonClickHandler} >Search</button>
+    <div className="searchBar">
+      <div className="topSection">
+        <span className="sectionTitle">Search</span>
+        <label htmlFor="searchTerms">Search:&nbsp;</label>
+        <input name="searchTerms" onChange={searchTermsChangeHandler} />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button className="btn btn-primary" onClick={searchButtonClickHandler} >Search</button>
+      </div>
     </div>
   );
 }

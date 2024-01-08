@@ -1,3 +1,4 @@
+/* 
 .App {
   text-align: center;
 }
@@ -11,20 +12,24 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
+} */
 
-.App-header {
+.app-header {
   background-color: #282c34;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
 }
 
-.App-link {
+h1 {
+  font-size: calc(10px + 2vmin);
+  font-weight: 900;
+}
+
+/* .App-link {
   color: #61dafb;
 }
 
@@ -35,4 +40,72 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+.track {
+  background-color: papayawhip;
+  border-style: solid;
+  margin: 10px;
+  /* border: 10px; */
+  border-style: none;
+  border-radius: 10px;
+  padding: 3px 25px 3px 25px;
+  margin: 12px 12px 12px 12px;
+}
+
+.trackTitle {
+  font-size: 110%;
+  font-weight: bold;
+  color: black;
+}
+
+.trackArtists {
+  font-size: 100%;
+  /* font-style: italic; */
+  color: black;
+}
+
+.trackList {
+  background-color: #DDDDDD;
+  min-height: 300px;
+  border-style: none;
+  border-radius: 25px;
+  padding: 5px;
+}
+
+.playlistTracksList {
+  background-color: #DDDDDD;
+  min-height: 300px;
+  border-style: none;
+  border-radius: 25px;
+  padding: 5px;
+}
+
+.playlist {
+  /* width: 100%; */
+}
+
+.topSection {
+  min-height: 90px;
+  margin: 10px 0 0 0;
+}
+
+.sectionTitle {
+  font-size: 120%;
+  font-weight: bold;
+  color: #555555;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 10px 0;
+}
+
+.savePlaylistButton {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  
 }
