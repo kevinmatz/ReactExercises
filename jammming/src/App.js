@@ -146,6 +146,12 @@ function App() {
           <div className="col-md-1"></div>
         </div>
       </div>
+      <br/>
+      <br/>
+      <div className="app-footer">
+        <p><a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank">Enable CORS Anywhere Demo for local testing</a></p>
+        <p>Copyright 2024, <a href="http://github.com/kevinmatz" target="_blank">Kevin Matz</a></p>
+      </div>
     </div>
   );
 }

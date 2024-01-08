@@ -24,45 +24,16 @@
   color: white;
 }
 
+.app-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 h1 {
-  font-size: calc(10px + 2vmin);
+  font-size: calc(24px + 2vmin);
   font-weight: 900;
-}
-
-/* .App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
-.track {
-  background-color: papayawhip;
-  border-style: solid;
-  margin: 10px;
-  /* border: 10px; */
-  border-style: none;
-  border-radius: 10px;
-  padding: 3px 25px 3px 25px;
-  margin: 12px 12px 12px 12px;
-}
-
-.trackTitle {
-  font-size: 110%;
-  font-weight: bold;
-  color: black;
-}
-
-.trackArtists {
-  font-size: 100%;
-  /* font-style: italic; */
-  color: black;
 }
 
 .trackList {
@@ -102,10 +73,56 @@ h1 {
   padding: 0 0 10px 0;
 }
 
-.savePlaylistButton {
+.savePlaylistButtonSection {
+  margin: 15px 0 0 0;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;  
+}
+
+.track {
+  background-color: papayawhip;
+  border-style: solid;
+  margin: 10px;
+  /* border: 10px; */
+  border-style: none;
+  border-radius: 10px;
+  padding: 3px 25px 3px 25px;
+  margin: 12px 12px 12px 12px;
+
+  display: grid;
+  grid-template-areas:
+    'trackinfo buttonarea';
+  gap: 10px;
+}
+
+.trackInfo {
+  grid-area: trackinfo;
+}
+
+.trackTitle {
+  font-size: 110%;
+  font-weight: bold;
+  color: black;
+}
+
+.trackArtists {
+  font-size: 100%;
+  /* font-style: italic; */
+  color: black;
+}
+
+.buttonArea {
+  grid-area: buttonarea;
+
+  text-align: right;
+/*  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  
+*/
+
+  padding: 6px 0 0 0;
 }

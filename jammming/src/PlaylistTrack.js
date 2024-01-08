@@ -8,18 +8,19 @@ function PlaylistTrack(props) {
 
   return (
     <div className="track">
-      <span className="trackTitle">{props.track.name}</span>
-      <br/>
-      <span className="trackArtists">{props.track.artists.map((artist, index) => (
-          <span key={index}>{artist.name}{index === props.track.artists.length - 1 ? "" : ", "}</span>
-      ))}</span>
-      <br/>
-
-      <button
-        className="btn btn-primary"
-        onClick={() => removeTrackFromPlaylistHandler(props.track)}>
-          &ndash;
-      </button>
+      <div className="trackInfo">
+        <div className="trackTitle">{props.track.name}</div>
+        <div className="trackArtists">{props.track.artists.map((artist, index) => (
+            <span key={index}>{artist.name}{index === props.track.artists.length - 1 ? "" : ", "}</span>
+        ))}</div>
+      </div>
+      <div className="buttonArea">
+        <button
+          className="btn btn-primary"
+          onClick={() => removeTrackFromPlaylistHandler(props.track)}>
+            &ndash;
+        </button>
+      </div>
     </div>
   );
 }
