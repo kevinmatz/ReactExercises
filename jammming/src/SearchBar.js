@@ -17,10 +17,11 @@ function SearchBar(props) {   // Expected props: "searchHandler" (function that 
     <div className="searchBar">
       <div className="topSection">
         <span className="sectionTitle">Find tracks</span>
-        <label htmlFor="searchTerms">Search&nbsp;</label>
-        <input name="searchTerms" onChange={searchTermsChangeHandler} />
+        <div className="searchControlsRow">
+          <input className="searchTextField" name="searchTerms" style={{"width": "100%"}} onChange={searchTermsChangeHandler} />
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <button className="btn btn-primary" onClick={searchButtonClickHandler} >Search</button>
+          <button className="searchButton btn btn-primary" onClick={searchButtonClickHandler}>Search</button>
+        </div>
       </div>
     </div>
   );

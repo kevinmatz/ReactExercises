@@ -13,8 +13,10 @@ function Playlist({
     <div className="playlist">
       <div className="topSection">
         <span className="sectionTitle">Add to a playlist</span>
-        <label htmlFor="PlaylistName">Playlist name&nbsp;</label>
-        <input name="PlaylistName" value={playlistName} onChange={playlistNameChangeHandler} />
+        <div className="playlistNameRow">
+          <label class="playlistNameLabel" htmlFor="PlaylistName">Playlist name&nbsp;</label>
+          <input class="playlistNameTextField" name="PlaylistName" value={playlistName} onChange={playlistNameChangeHandler} />
+        </div>
       </div>
       <PlaylistTracksList
         playlistTracksArray={playlistTracksArray}
